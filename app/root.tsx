@@ -6,7 +6,8 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
-} from "@remix-run/react";
+} from "@remix-run/react"
+import styles from "./styles/app.css";
 import spotlightCss from '@stoplight/elements/styles.min.css';
 import { ExternalScripts } from "remix-utils";
 
@@ -20,6 +21,10 @@ export const links: LinksFunction = () => ([
   {
     rel: "stylesheet",
     href: spotlightCss
+  },
+  {
+    rel: "stylesheet",
+    href: styles
   }
 ])
 
@@ -30,7 +35,7 @@ export default function App() {
         <Meta />
         <Links />
       </head>
-      <body style={{ height: "100vh" }}>
+      <body className="h-[100vh]">
         <Outlet />
         <ScrollRestoration />
         <ExternalScripts />
