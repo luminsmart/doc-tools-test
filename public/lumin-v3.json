@@ -1,0 +1,297 @@
+{
+    "openapi": "3.0.0",
+    "servers": [
+      {
+        "description": "SwaggerHub API Auto Mocking",
+        "url": "https://virtserver.swaggerhub.com/RYANMASON/LuminFleetAPI/0.1.0"
+      },
+      {
+        "description": "Lumin REST API",
+        "url": "https://{environment}.luminsmart.com/v3/",
+        "variables": {
+          "environment": {
+            "default": "api",
+            "enum": [
+              "api",
+              "dev.api"
+            ]
+          }
+        }
+      }
+    ],
+    "info": {
+      "description": "Endpoints for the Lumin Fleet API!",
+      "version": "0.1.0",
+      "title": "Lumin Fleet API",
+      "contact": {
+        "email": "keegan.campanelli@luminsmart.com"
+      }
+    },
+    "tags": [
+      {
+        "name": "Fleet Control Events",
+        "description": "Endpoints for working with Fleet Control Events. These Endpoints are only available to authenticated Fleet Managers."
+      }
+    ],
+    "paths": {
+      "/fleet/controlevent": {
+        "post": {
+          "tags": [
+            "Fleet Control Events"
+          ],
+          "summary": "Creates a Fleet Control Event and returns the Control Event ID.",
+          "requestBody": {
+            "required": true,
+            "description": "the Fleet Control Event description",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ControlEvent"
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Fleet Control Event has been created",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ControlEvent"
+                  },
+                  "example": {
+                    "start_time": null
+                  }
+                }
+              },
+              "links": {
+                "GetControlEventbyId": {
+                  "operationId": "getControlEvent",
+                  "parameters": {
+                    "Id": "$response.body#/id"
+                  },
+                  "description": "The `id` value returned in the response can be used as the `id` parameter in `GET /fleet/controlevent/{eventId}`.\n"
+                }
+              }
+            }
+          }
+        }
+      },
+      "/fleet/controlevent/{eventId}": {
+        "get": {
+          "operationId": "getControlEvent",
+          "tags": [
+            "Fleet Control Events"
+          ],
+          "summary": "Returns a Fleet Control Event.",
+          "parameters": [
+            {
+              "$ref": "#/components/parameters/eventIdParam"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "the requested Fleet Control Event",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ControlEvent"
+                  },
+                  "examples": {
+                    "ex1": {
+                      "$ref": "#/components/examples/scheduledEventExample"
+                    }
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "not found"
+            }
+          }
+        },
+        "put": {
+          "summary": "Update a parameter of the Fleet Control Event.",
+          "operationId": "putControlEvent",
+          "tags": [
+            "Fleet Control Events"
+          ],
+          "parameters": [
+            {
+              "$ref": "#/components/parameters/eventIdParam"
+            }
+          ],
+          "requestBody": {
+            "required": true,
+            "description": "the Fleet Control Event description",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ControlEvent"
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "the updated Fleet Control Event",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ControlEvent"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/fleet/controlevent/{eventId}/cancel": {
+        "put": {
+          "operationId": "cancelControlEvent",
+          "tags": [
+            "Fleet Control Events"
+          ],
+          "summary": "Cancels a Fleet Control Event.",
+          "parameters": [
+            {
+              "$ref": "#/components/parameters/eventIdParam"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "the cancelled Fleet Control Event",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ControlEvent"
+                  },
+                  "examples": {
+                    "ex1": {
+                      "$ref": "#/components/examples/cancelledEventExample"
+                    }
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "not found"
+            }
+          }
+        }
+      }
+    },
+    "components": {
+      "securitySchemes": {
+        "bearerAuth": {
+          "type": "http",
+          "scheme": "bearer"
+        }
+      },
+      "schemas": {
+        "ControlEvent": {
+          "type": "object",
+          "required": [
+            "start_time",
+            "end_time",
+            "lsp_ids",
+            "is_mandatory"
+          ],
+          "properties": {
+            "id": {
+              "type": "integer",
+              "readOnly": true
+            },
+            "start_time": {
+              "type": "string",
+              "format": "date-time",
+              "example": "2022-07-26T07:00:00Z"
+            },
+            "end_time": {
+              "type": "string",
+              "format": "date-time",
+              "example": "2022-07-26T09:00:00Z"
+            },
+            "lsp_ids": {
+              "type": "array",
+              "items": {
+                "type": "integer"
+              }
+            },
+            "is_mandatory": {
+              "type": "boolean",
+              "example": true
+            },
+            "execution_status": {
+              "readOnly": true,
+              "type": "integer"
+            },
+            "compliant_lsps": {
+              "readOnly": true,
+              "type": "array",
+              "items": {
+                "type": "integer"
+              }
+            },
+            "noncompliant_lsps": {
+              "readOnly": true,
+              "type": "object",
+              "items": {
+                "type": "integer"
+              }
+            }
+          }
+        }
+      },
+      "parameters": {
+        "eventIdParam": {
+          "name": "eventId",
+          "in": "path",
+          "description": "the ID of the Fleet Control Event",
+          "required": true,
+          "schema": {
+            "type": "integer"
+          }
+        }
+      },
+      "examples": {
+        "scheduledEventExample": {
+          "value": {
+            "start_time": "2022-07-26T07:00:00Z",
+            "end_time": "2022-07-26T09:00:00Z",
+            "lsp_ids": [
+              2712,
+              2713,
+              2714
+            ],
+            "is_mandatory": true,
+            "execution_status": 1,
+            "compliant_lsps": [
+              2712,
+              2713,
+              2714
+            ],
+            "noncompliant_lsps": []
+          }
+        },
+        "cancelledEventExample": {
+          "value": {
+            "start_time": "2022-07-26T07:00:00Z",
+            "end_time": "2022-07-26T09:00:00Z",
+            "lsp_ids": [
+              2712,
+              2713,
+              2714
+            ],
+            "is_mandatory": true,
+            "execution_status": 5
+          }
+        }
+      }
+    },
+    "security": [
+      {
+        "bearerAuth": []
+      }
+    ]
+  }
