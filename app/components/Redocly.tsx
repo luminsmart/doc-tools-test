@@ -1,4 +1,4 @@
-import { RedocStandalone } from 'redoc';
+import { RedocStandalone } from "redoc";
 
 declare global {
   namespace JSX {
@@ -9,5 +9,5 @@ declare global {
 }
 
 export const Redocly: React.FC = () => {
-  return <RedocStandalone specUrl={"./lumin-v3.json"} />;
+  return <RedocStandalone specUrl="./lumin-v3.json" />
 };

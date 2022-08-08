@@ -7,5 +7,8 @@ declare global {
 }
 
 export const Stoplight: React.FC = () => {
-  return <elements-api apiDescriptionUrl={"./lumin-v3.json"} router="hash" />;
+  return <elements-api
+  apiDescriptionUrl="./lumin-v3.json"
+  router="hash"
+></elements-api>;
 };

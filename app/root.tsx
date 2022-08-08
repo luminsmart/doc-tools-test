@@ -8,8 +8,9 @@ import {
   ScrollRestoration,
 } from "@remix-run/react"
 import styles from "./styles/app.css";
-import spotlightCss from '@stoplight/elements/styles.min.css';
+import spotlightCss from '@stoplight/elements-dev-portal/styles.min.css';
 import { ExternalScripts } from "remix-utils";
+import { Navbar } from "./components/Navbar";
 
 export const meta: MetaFunction = () => ({
   charset: "utf-8",
@@ -35,7 +36,8 @@ export default function App() {
         <Meta />
         <Links />
       </head>
-      <body className="h-[100vh]">
+      <body className="h-screen flex flex-col">
+        <Navbar />
         <Outlet />
         <ScrollRestoration />
         <ExternalScripts />
